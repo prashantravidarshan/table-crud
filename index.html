@@ -1,0 +1,150 @@
+<html>
+<head>
+    <title>Table curd with Javascrit</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./jquery.min.js"></script>
+    <script src="./index.js"></script>
+</head>
+<body>
+  <div class="container">
+    <table class="table" id="studentsForm">
+      <tr>
+        <th>Name</th>
+        <td>
+          <input
+            type="text"
+            name="studentName"
+            id="studentName"
+            placeholder="Enter Student Name"
+            required
+          />
+        </td>
+      </tr>
+
+      <tr>
+        <th>Mathematics</th>
+        <td>
+          <input
+            type="number"
+            class="range-enforced"
+            min=0
+            max=100
+            name="mathematicsMarks"
+            id="mathematicsMarks"
+            placeholder="Enter Mathematics Marks"
+            value=""
+            onkeyup="rangeValidate(event, this)"
+            required
+          />
+          <div class="warning" style="display: none;"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>Physics</th>
+        <td>
+          <input
+            type="number"
+            class="range-enforced"
+            min=0
+            max=100
+            name="physicsMarks"
+            id="physicsMarks"
+            placeholder="Enter Physics Marks"
+            value=""
+            onkeyup="rangeValidate(event, this)"
+            required
+          />
+          <div class="warning" style="display: none;"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>Chemistery</th>
+        <td>
+          <input
+            type="number"
+            class="range-enforced"
+            min=0
+            max=100
+            name="chemistryMarks"
+            id="chemistryMarks"
+            placeholder="Enter Chemistry Marks"
+            value=""
+            onkeyup="rangeValidate(event, this)"
+            required
+          />
+          <div class="warning" style="display: none;"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>English</th>
+        <td>
+          <input
+            type="number"
+            class="range-enforced"
+            min=0
+            max=100
+            name="englishMarks"
+            id="englishMarks"
+            placeholder="Enter English Marks"
+            value=""
+            onkeyup="rangeValidate(event, this)"
+            required
+          />
+          <div class="warning" style="display: none;"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>Hindi</th>
+        <td>
+          <input
+            type="number"
+            class="range-enforced"
+            min=0
+            max=100
+            name="hindiMarks"
+            id="hindiMarks"
+            placeholder="Enter Hindi Marks"
+            value=""
+            onkeyup="rangeValidate(event, this)"
+            required
+          />
+          <div class="warning" style="display: none;"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <button type='button' class="button button-add" id='buttonAdd'>Add</button>
+          <button type='button' class="button button-update" id='butttonUpdate' style="display: none;">Update</button>
+          <button type='button' class="button button-reset" id='buttonReset'>Reset</button>
+        </td>
+        <td>
+        </td>
+      </tr>
+    </table>
+
+    <table id="studentsTable" class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Mathematics</th>
+            <th>Physics</th>
+            <th>Chemistery</th>
+            <th>English</th>
+            <th>Hindi</th>
+            <th>Percentage</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <input type="hidden" id="currentRowIndex" value="" />
+  </div>
+</body>
+</html>

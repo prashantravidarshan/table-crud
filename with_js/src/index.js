@@ -79,11 +79,12 @@ function handleDisabled() {
     var marksCollection = getMarksCollection();
     console.log('marksCollection', marksCollection);
     var isHavingAllNumeric =  !marksCollection.some(isNaN);
-    isAllMarksFieldsPresent = getIsAllMarksFieldsPresent();
-    if (isAllMarksFieldsPresent) {
+    var isNonEmpty = !marksCollection.includes(NaN);
+    if (isNonEmpty) {
       if (isHavingAllNumeric) {
-        var isMinLessThenZero = marksCollection.min() <= 0;
-        var isMaxgreaterThenHunder = marksCollection.max()>= 100;
+        console.log('nonEmpty')
+        var isMinLessThenZero = marksCollection.min() < 0;
+        var isMaxgreaterThenHunder = marksCollection.max()> 100;
         if (isMinLessThenZero || isMaxgreaterThenHunder) {
           buttonUpdateEl.style.cursor = 'not-allowed';
         } else {
@@ -226,20 +227,26 @@ function getPercentage() {
   return parseFloat(percentage).round(2);
 }
 
-function getIsAllMarksFieldsPresent() {
-  var mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, isAllMarksFieldsPresent;
-  isAllMarksFieldsPresent = false;
+// function getIsAllMarksFieldsPresent() {
+//   var mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, isAllMarksFieldsPresent;
+//   isAllMarksFieldsPresent = false;
 
-  mathematicsMarks = document.getElementById('mathematicsMarks').value.trim();
-  physicsMarks = document.getElementById('physicsMarks').value.trim();
-  chemistryMarks = document.getElementById('chemistryMarks').value.trim();
-  englishMarks = document.getElementById('englishMarks').value.trim();
-  hindiMarks = document.getElementById('hindiMarks').value.trim();
-  if (mathematicsMarks && physicsMarks && chemistryMarks && englishMarks && hindiMarks) {
-    isAllMarksFieldsPresent = true;
-  }
-  return isAllMarksFieldsPresent;
-}
+//   mathematicsMarks = parseInt(document.getElementById('mathematicsMarks').value.trim());
+//   physicsMarks = parseInt(document.getElementById('physicsMarks').value.trim());
+//   chemistryMarks = parseInt(document.getElementById('chemistryMarks').value.trim();
+//   englishMarks = document.getElementById('englishMarks').value.trim();
+//   hindiMarks = document.getElementById('hindiMarks').value.trim();
+//   if (
+//     (mathematicsMarks === '0' || mathematicsMarks) && 
+//     (physicsMarks === '0' || physicsMarks) &&
+//     (chemistryMarks === '0' || chemistryMarks) &&
+//     (englishMarks === '0' || englishMarks) &&
+//     (hindiMarks === '0' || hindiMarks)
+//     ) {
+//     isAllMarksFieldsPresent = true;
+//   }
+//   return isAllMarksFieldsPresent;
+// }
 
 function getFormData() {
   var studentName, mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, rowData;
@@ -371,25 +378,29 @@ function handleEdit(e) {
 }
 
 function handleUpdate(e) {
-  __isValidate__ = true;
-  var currentRowIndex;
-  currentRowIndex = parseInt(document.getElementById('currentRowIndex').value);
-  var rowData = getFormData();
-  var isValidate = getIsValidate();
-  if (isValidate) {
-    var table = document.getElementById("studentsTable");
-    var row = table.rows[currentRowIndex + 1];
-    updateCells(row, rowData);
-    var buttonAdd = document.getElementById('buttonAdd');
-    var butttonUpdate = document.getElementById('butttonUpdate');
-    toggleEl(buttonAdd);
-    toggleEl(butttonUpdate);
-    reset();
-    alert("This record has been updated successfully");
-  } else {
-    alert("Validation Failed");
+  var buttonUpdateEl = document.getElementById('butttonUpdate');
+  var isDisabled = buttonUpdateEl.style.cursor === 'not-allowed';
+  if (!isDisabled) {
     __isValidate__ = true;
+    var currentRowIndex;
+    currentRowIndex = parseInt(document.getElementById('currentRowIndex').value);
+    var rowData = getFormData();
+    var isValidate = getIsValidate();
+    if (isValidate) {
+      var table = document.getElementById("studentsTable");
+      var row = table.rows[currentRowIndex + 1];
+      updateCells(row, rowData);
+      var buttonAdd = document.getElementById('buttonAdd');
+      toggleEl(buttonAdd);
+      toggleEl(buttonUpdateEl);
+      reset();
+      alert("This record has been updated successfully");
+    } else {
+      alert("Validation Failed");
+      __isValidate__ = true;
+    }
   }
+  
 }
 
 function handleDelete(e) {

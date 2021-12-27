@@ -1,7 +1,6 @@
 var __totalMarks__ = 500;
 var __isValidate__ = true;
 function getIsValidate() {
-  
   return __isValidate__;
 }
 
@@ -18,7 +17,7 @@ Array.prototype.min = function () {
 };
 
 function handleInputStyle(type, target) {
-  target.style.borderWidth = 2
+  target.style.borderWidth = 2;
   if (type === 'success') {
     target.style.borderStyle = 'double';
     target.style.borderColor = "green";
@@ -73,18 +72,16 @@ function getIsGreaterThenHundred(number) {
 }
 
 function handleDisabled() {
-  var buttonUpdateEl = document.getElementById('butttonUpdate'); 
-  var isButtonUpdateElVisible = isVisible(buttonUpdateEl)
+  var buttonUpdateEl = document.getElementById('butttonUpdate');
+  var isButtonUpdateElVisible = isVisible(buttonUpdateEl);
   if (isButtonUpdateElVisible) {
     var marksCollection = getMarksCollection();
-    console.log('marksCollection', marksCollection);
-    var isHavingAllNumeric =  !marksCollection.some(isNaN);
+    var isHavingAllNumeric = !marksCollection.some(isNaN);
     var isNonEmpty = !marksCollection.includes(NaN);
     if (isNonEmpty) {
       if (isHavingAllNumeric) {
-        console.log('nonEmpty')
         var isMinLessThenZero = marksCollection.min() < 0;
-        var isMaxgreaterThenHunder = marksCollection.max()> 100;
+        var isMaxgreaterThenHunder = marksCollection.max() > 100;
         if (isMinLessThenZero || isMaxgreaterThenHunder) {
           buttonUpdateEl.style.cursor = 'not-allowed';
         } else {
@@ -156,9 +153,7 @@ function handleValidate(target, _type) {
         } else {
           removeItemOnce(inputWarningText, greaterThenHundredText);
         }
-
       }
-
     }
     handleDisabled();
   }
@@ -211,7 +206,6 @@ function getObtainedMarks() {
   var marksCollection = getMarksCollection();
   var obtainedMarks = marksCollection.reduce(add, 0);
   return obtainedMarks;
-
 }
 
 function getTotalMarks() {
@@ -237,7 +231,9 @@ function getFormData() {
   englishMarks = parseInt(document.getElementById('englishMarks').value);
   hindiMarks = parseInt(document.getElementById('hindiMarks').value);
   percentage = getPercentage();
+
   var inputIds = ['studentName', 'mathematicsMarks', 'physicsMarks', 'chemistryMarks', 'englishMarks', 'hindiMarks'];
+
   for (var i = 0; i < inputIds.length; i++) {
     var inputEl = document.getElementById(inputIds[i]);
     handleChange(inputEl);
@@ -285,7 +281,7 @@ function addActionLinks(row) {
 
 function insertRow() {
   var table = document.getElementById("studentsTable");
-  var tbodyRowCount = table.tBodies[0].rows.length; // 3
+  var tbodyRowCount = table.tBodies[0].rows.length;
 
   var row = table.insertRow(tbodyRowCount + 1);
 
@@ -297,7 +293,7 @@ function insertRow() {
 function reset() {
   var buttonAddEl, isButtonElVisible;
   buttonAddEl = document.getElementById('buttonAdd');
-  isButtonElVisible = isVisible(buttonAddEl)
+  isButtonElVisible = isVisible(buttonAddEl);
   if (isButtonElVisible) {
     document.getElementById('studentName').value = "";
     document.getElementById('currentRowIndex').value = undefined;
@@ -379,7 +375,6 @@ function handleUpdate(e) {
       __isValidate__ = true;
     }
   }
-  
 }
 
 function handleDelete(e) {

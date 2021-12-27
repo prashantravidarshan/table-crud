@@ -73,7 +73,6 @@ function getIsGreaterThenHundred(number) {
 }
 
 function handleValidate(target, _type) {
-  // __isValidate__ = true;
   var inputWarningText = [];
   var emptyFieldText = 'This Field is required';
   var inputValue = target.value.trim();
@@ -133,6 +132,7 @@ function handleValidate(target, _type) {
       }
 
     }
+    console.log(target.name, __isValidate__)
   }
 
   handleInputWarningText(target, inputWarningText.join('<br />'));
@@ -288,6 +288,7 @@ function reset() {
 
 
 function handleCreate() {
+  __isValidate__ = true;
   var rowData = getFormData();
   var isValidate = getIsValidate();
   if (isValidate) {
@@ -297,7 +298,6 @@ function handleCreate() {
     alert("This record has been updated successfully");
   } else {
     alert("Validation Failed");
-    __isValidate__ = true;
   }
 }
 
@@ -317,11 +317,15 @@ function handleEdit(e) {
 
   var buttonAdd = document.getElementById('buttonAdd');
   var butttonUpdate = document.getElementById('butttonUpdate');
-  toggleEl(buttonAdd);
-  toggleEl(butttonUpdate);
+  var isButtonAddElVisible = isVisible(buttonAdd)
+  if (isButtonAddElVisible) {
+    toggleEl(buttonAdd);
+    toggleEl(butttonUpdate);
+  }
 }
 
 function handleUpdate(e) {
+  __isValidate__ = true;
   var currentRowIndex;
   currentRowIndex = parseInt(document.getElementById('currentRowIndex').value);
   var rowData = getFormData();

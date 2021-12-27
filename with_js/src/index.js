@@ -135,7 +135,7 @@ function handleValidate(target, _type) {
       isValidate = true;
     }
 
-    return isValidate;
+    // return isValidate
 
   }
   

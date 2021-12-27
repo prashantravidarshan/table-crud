@@ -27,10 +27,16 @@ function handleInputStyle(type, target) {
     target.style.borderStyle = 'double';
     target.style.borderColor = "green";
     target.style.backgroundColor = '#E0FFFF';
-  } else {
+  } else if (type==='error') {
     target.style.backgroundColor = '#ffcccb';
     target.style.borderStyle = 'ridge';
     target.style.borderColor = "red";
+  }
+   else {
+    target.style.borderWidth = 2;
+    target.style.backgroundColor = '#fff';
+    target.style.borderStyle = 'inset';
+    target.style.borderColor = '#000';
   }
 }
 
@@ -136,10 +142,6 @@ function handleValidate(target, _type) {
       }
       
     }
-    console.log(isEmpty, isNonNumber, isNonString, isLessThenZeroNumber, isGreaterThenHundredNumber)
-      
-
-    // return isValidate
 
   }
   
@@ -285,6 +287,13 @@ function reset() {
   document.getElementById('chemistryMarks').value = "";
   document.getElementById('englishMarks').value = "";
   document.getElementById('hindiMarks').value = "";
+
+  var inputIds = ['studentName', 'mathematicsMarks', 'physicsMarks', 'chemistryMarks', 'englishMarks', 'hindiMarks'];
+  for (var i = 0; i < inputIds.length; i++) {
+    var inputEl = document.getElementById(inputIds[i]);
+    handleInputStyle('none', inputEl);
+    handleInputWarningText(inputEl, '');
+  }
 }
 
 

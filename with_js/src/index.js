@@ -227,27 +227,6 @@ function getPercentage() {
   return parseFloat(percentage).round(2);
 }
 
-// function getIsAllMarksFieldsPresent() {
-//   var mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, isAllMarksFieldsPresent;
-//   isAllMarksFieldsPresent = false;
-
-//   mathematicsMarks = parseInt(document.getElementById('mathematicsMarks').value.trim());
-//   physicsMarks = parseInt(document.getElementById('physicsMarks').value.trim());
-//   chemistryMarks = parseInt(document.getElementById('chemistryMarks').value.trim();
-//   englishMarks = document.getElementById('englishMarks').value.trim();
-//   hindiMarks = document.getElementById('hindiMarks').value.trim();
-//   if (
-//     (mathematicsMarks === '0' || mathematicsMarks) && 
-//     (physicsMarks === '0' || physicsMarks) &&
-//     (chemistryMarks === '0' || chemistryMarks) &&
-//     (englishMarks === '0' || englishMarks) &&
-//     (hindiMarks === '0' || hindiMarks)
-//     ) {
-//     isAllMarksFieldsPresent = true;
-//   }
-//   return isAllMarksFieldsPresent;
-// }
-
 function getFormData() {
   var studentName, mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, rowData;
 

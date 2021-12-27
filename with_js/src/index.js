@@ -1,4 +1,13 @@
 var __totalMarks__ = 500;
+var isEmpty = true;
+var isNonNumber=true;
+var isNonString = true;
+var isLessThenZeroNumber = true;
+var isGreaterThenHundredNumber = true;
+function getIsNotValidate () {
+  var isNotValidate = isEmpty || isNonNumber || isNonString || isLessThenZeroNumber || isGreaterThenHundredNumber
+  return isNotValidate;
+}
 
 Number.prototype.round = function(places) {
   return +(Math.round(this + "e+" + places)  + "e-" + places);
@@ -62,8 +71,6 @@ function getIsGreaterThenHundred(number) {
 }
 
 function handleValidate(target, _type) {
-  var isEmpty, isNonNumber, isNonString, isLessThenZeroNumber, isGreaterThenHundredNumber;
-  var isValidate = false;
   var inputWarningText = [];
   var emptyFieldText = 'This Field is required';    
   var inputValue = target.value.trim();
@@ -129,11 +136,8 @@ function handleValidate(target, _type) {
       }
       
     }
-    if (isEmpty || isNonNumber || isNonString || isLessThenZeroNumber || isGreaterThenHundredNumber) {
-      isValidate = false;
-    } else {
-      isValidate = true;
-    }
+    console.log(isEmpty, isNonNumber, isNonString, isLessThenZeroNumber, isGreaterThenHundredNumber)
+      
 
     // return isValidate
 
@@ -210,6 +214,11 @@ function getFormData () {
   englishMarks = parseInt(document.getElementById('englishMarks').value);
   hindiMarks = parseInt(document.getElementById('hindiMarks').value);
   percentage = getPercentage();
+  var inputIds = ['studentName', 'mathematicsMarks', 'physicsMarks', 'chemistryMarks', 'englishMarks', 'hindiMarks'];
+  for (var i = 0; i < inputIds.length; i++) {
+    var inputEl = document.getElementById(inputIds[i]);
+    handleChange(inputEl); 
+  }
 
   rowData = [studentName, mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, percentage];
   return rowData;
@@ -281,11 +290,14 @@ function reset() {
 
 function handleCreate () {
   var rowData = getFormData();
-  if (true) {
+  var isNotValidate =  getIsNotValidate();
+  if (!isNotValidate) {
     var row = insertRow();
     updateCells(row, rowData);
     reset();
     alert("This record has been updated successfully");
+  } else {
+    alert("Validation Failed");
   }
 }
 
@@ -309,11 +321,13 @@ function handleEdit(e) {
 }
 
 function handleUpdate (e) {
+  var currentRowIndex;
+  currentRowIndex = parseInt(document.getElementById('currentRowIndex').value);
   var rowData = getFormData();
-  if (true) {
+  var isNotValidate =  getIsNotValidate();
+  if (!isNotValidate) {
     var table = document.getElementById("studentsTable");
-    var rowIndex = row.rowIndex - 1;
-    var row = table.rows[rowIndex];
+    var row = table.rows[currentRowIndex + 1];
     updateCells(row, rowData);
     var buttonAdd = document.getElementById('buttonAdd');
     var butttonUpdate  = document.getElementById('butttonUpdate');
@@ -321,6 +335,8 @@ function handleUpdate (e) {
     toggleEl(butttonUpdate);
     reset();
     alert("This record has been updated successfully");
+  } else {
+    alert("Validation Failed");
   }
 }
 

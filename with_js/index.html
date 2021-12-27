@@ -2,7 +2,6 @@
 <head>
     <title>Table curd with Javascrit</title>
     <link rel="stylesheet" href="./src/styles.css">
-    <script src="./src/jquery.min.js"></script>
     <script src="./src/index.js"></script>
 </head>
 <body>
@@ -17,6 +16,7 @@
             id="studentName"
             placeholder="Enter Student Name"
             required
+            value=""
           />
         </td>
       </tr>
@@ -25,15 +25,12 @@
         <th>Mathematics</th>
         <td>
           <input
-            type="number"
+            type="text"
             class="range-enforced"
-            min=0
-            max=100
             name="mathematicsMarks"
             id="mathematicsMarks"
             placeholder="Enter Mathematics Marks"
             value=""
-            onkeyup="rangeValidate(event, this)"
             required
           />
           <div class="warning" style="display: none;"></div>
@@ -44,15 +41,12 @@
         <th>Physics</th>
         <td>
           <input
-            type="number"
+            type="text"
             class="range-enforced"
-            min=0
-            max=100
             name="physicsMarks"
             id="physicsMarks"
             placeholder="Enter Physics Marks"
             value=""
-            onkeyup="rangeValidate(event, this)"
             required
           />
           <div class="warning" style="display: none;"></div>
@@ -63,15 +57,12 @@
         <th>Chemistery</th>
         <td>
           <input
-            type="number"
+            type="text"
             class="range-enforced"
-            min=0
-            max=100
             name="chemistryMarks"
             id="chemistryMarks"
             placeholder="Enter Chemistry Marks"
             value=""
-            onkeyup="rangeValidate(event, this)"
             required
           />
           <div class="warning" style="display: none;"></div>
@@ -82,15 +73,12 @@
         <th>English</th>
         <td>
           <input
-            type="number"
+            type="text"
             class="range-enforced"
-            min=0
-            max=100
             name="englishMarks"
             id="englishMarks"
             placeholder="Enter English Marks"
             value=""
-            onkeyup="rangeValidate(event, this)"
             required
           />
           <div class="warning" style="display: none;"></div>
@@ -101,15 +89,12 @@
         <th>Hindi</th>
         <td>
           <input
-            type="number"
+            type="text"
             class="range-enforced"
-            min=0
-            max=100
             name="hindiMarks"
             id="hindiMarks"
             placeholder="Enter Hindi Marks"
             value=""
-            onkeyup="rangeValidate(event, this)"
             required
           />
           <div class="warning" style="display: none;"></div>
@@ -118,9 +103,9 @@
 
       <tr>
         <td>
-          <button type='button' class="button button-add" id='buttonAdd'>Add</button>
-          <button type='button' class="button button-update" id='butttonUpdate' style="display: none;">Update</button>
-          <button type='button' class="button button-reset" id='buttonReset'>Reset</button>
+          <button type='button' class="button button-add" id='buttonAdd' onclick="handleCreate()">Add</button>
+          <button type='button' class="button button-update" id='butttonUpdate' onclick="handleUpdate()" style="display: none;">Update</button>
+          <button type='button' class="button button-reset" id='buttonReset' onclick="handleReset()">Reset</button>
         </td>
         <td>
         </td>

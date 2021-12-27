@@ -13,8 +13,8 @@ $(function () {
     hindiMarks = $("#hindiMarks").val();
     percentage = getPercentage()
 
-    var edit = "<a class='edit link link-edit' href='JavaScript:void(0);' >Edit</a>";
-    var del = "<a class='delete link link-delete' href='JavaScript:void(0);'>Delete</a>";
+    var edit = "<a class='link link-edit'>Edit</a>";
+    var del = "<a class='link link-delete'>Delete</a>";
 
     if (studentName == "" || mathematicsMarks == "" || physicsMarks == "" || chemistryMarks == "" || englishMarks == "" || hindiMarks == "" ) {
       alert("All fields required!");
@@ -29,26 +29,25 @@ $(function () {
 
   $('#butttonUpdate').on('click', function () {
 
-    var mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, percentage;
-
+    var currentRowIndex, mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, percentage;
+    currentRowIndex = $('#currentRowIndex').val();
     mathematicsMarks = $("#mathematicsMarks").val();
     physicsMarks = $("#physicsMarks").val();
     chemistryMarks = $("#chemistryMarks").val();
     englishMarks = $("#englishMarks").val();
     hindiMarks = $("#hindiMarks").val();
     percentage = getPercentage();
-
+    
     if (studentName == "" || mathematicsMarks == "" || physicsMarks == "" || chemistryMarks == "" || englishMarks == "" || hindiMarks == "" ) {
       alert("All fields required!");
     } else {
-      $('#studentsTable tbody tr').eq($('#currentRowIndex').val()).find('td').eq(1).html(mathematicsMarks);
-      $('#studentsTable tbody tr').eq($('#currentRowIndex').val()).find('td').eq(2).html(physicsMarks);
-      $('#studentsTable tbody tr').eq($('#currentRowIndex').val()).find('td').eq(3).html(chemistryMarks);
-      $('#studentsTable tbody tr').eq($('#currentRowIndex').val()).find('td').eq(4).html(englishMarks);
-      $('#studentsTable tbody tr').eq($('#currentRowIndex').val()).find('td').eq(5).html(hindiMarks);
-      $('#studentsTable tbody tr').eq($('#currentRowIndex').val()).find('td').eq(6).html(percentage + '%');
-  
-      $("#studentName").attr('disabled', false);
+      $('#studentsTable tbody tr').eq(currentRowIndex).find('td').eq(1).html(mathematicsMarks);
+      $('#studentsTable tbody tr').eq(currentRowIndex).find('td').eq(2).html(physicsMarks);
+      $('#studentsTable tbody tr').eq(currentRowIndex).find('td').eq(3).html(chemistryMarks);
+      $('#studentsTable tbody tr').eq(currentRowIndex).find('td').eq(4).html(englishMarks);
+      $('#studentsTable tbody tr').eq(currentRowIndex).find('td').eq(5).html(hindiMarks);
+      $('#studentsTable tbody tr').eq(currentRowIndex).find('td').eq(6).html(percentage + '%');
+      
       $('#buttonAdd').show();
       $('#butttonUpdate').hide();
   
@@ -57,15 +56,21 @@ $(function () {
     }
   });
 
-  $("#studentsTable").on("click", ".delete", function (e) {
+  $("#studentsTable").on("click", ".link-delete", function (e) {
     if (confirm("Are you sure want to delete this record!")) {
-      $(this).closest('tr').remove();
-      $('#buttonAdd').show();
-      $('#butttonUpdate').hide();
-      reset();
+      var currentRowIndex, row, rowIndex;
+      currentRowIndex = parseInt($('#currentRowIndex').val());
+      row = $(this).closest('tr');
+      rowIndex = row.index()
+      row.remove();
+      if (currentRowIndex === rowIndex) {
+        $('#buttonAdd').show();
+        $('#butttonUpdate').hide();
+        reset();
+      } else {
+        $('#currentRowIndex').val(currentRowIndex - 1);
+      }
       alert("This record has been deleted successfully");
-    } else {
-      e.preventDefault();
     }
   });
 
@@ -73,7 +78,7 @@ $(function () {
     reset();
   });
 
-  $("#studentsTable").on("click", ".edit", function (e) {
+  $("#studentsTable").on("click", ".link-edit", function (e) {
     var row = $(this).closest('tr');
     $('#currentRowIndex').val($(row).index());
     var td = $(row).find("td");
@@ -116,7 +121,7 @@ function getObtainedMarks() {
 
   var obtainedMarks = marksCollection.reduce(add, 0);
 
-  return parseFloat(obtainedMarks).round(2);
+  return obtainedMarks;
 }
 
 function getTotalMarks() {
@@ -128,34 +133,18 @@ function getPercentage() {
   var totalMarks = getTotalMarks();
   var obtainedMarks = getObtainedMarks();
   var percentage = (obtainedMarks/totalMarks) * 100;
-  return percentage;
+  return parseFloat(percentage).round(2);
 }
 
 function reset() {
   if ($('#buttonAdd').is(":visible")) {
     $("#studentName").val("");
+    $("#studentName").attr('disabled', false);
+    $("#currentRowIndex").val("");
   }
   $("#mathematicsMarks").val("");
   $("#physicsMarks").val("");
   $("#chemistryMarks").val("");
   $("#englishMarks").val("");
   $("#hindiMarks").val("");
-  $("#currentRowIndex").val("");
-  if ($('#buttonAdd').is(":visible")) {
-    $("#studentName").attr('disabled', false);
-  }
-}
-
-function rangeValidate(event, self) {
-  var min=parseFloat($(self).attr('min'));
-  var max=parseFloat($(self).attr('max'));
-  var curr=parseFloat(event.target.value);
-  if (curr > max) { $(self).val(max); var changed=true; }
-  if (curr < min) { $(self).val(min); var changed=true; }
-  if (changed) {
-    $warning = $(self).siblings('.warning')
-    $warning.text('Only ' + min + ' through ' + max + ' allowed');
-    $warning.show()
-    $warning.fadeOut(2500);
-  }
 }

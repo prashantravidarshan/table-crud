@@ -12,6 +12,156 @@ Array.prototype.min = function() {
   return Math.min.apply(null, this);
 };
 
+function handleInputStyle(type, target) {
+  target.style.borderWidth = 2
+  if (type === 'success') {
+    target.style.borderStyle = 'double';
+    target.style.borderColor = "green";
+    target.style.backgroundColor = '#E0FFFF';
+  } else {
+    target.style.backgroundColor = '#ffcccb';
+    target.style.borderStyle = 'ridge';
+    target.style.borderColor = "red";
+  }
+}
+
+function handleInputWarningText(target, inputWarningText) {
+  target.nextSibling.nextSibling.innerHTML =  inputWarningText;
+  if (inputWarningText) {
+    target.nextSibling.nextSibling.style.display = 'block';
+  } else {
+    target.nextSibling.nextSibling.style.display = 'none';
+  }
+}
+
+function removeItemOnce(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
+
+
+function getIsValidateName(name) {
+    var regex = /^[a-zA-Z ]{2,30}$/;
+    return regex.test(name);
+}
+
+function getIsValidateMarks(markks) {
+  var regex = /^\d*$/;
+  return regex.test(markks);
+}
+
+function getIsLessThenZero(number) {
+  return number < 0;
+}
+
+function getIsGreaterThenHundred(number) {
+  return number > 100;
+}
+
+function handleValidate(target, _type) {
+  var isEmpty, isNonNumber, isNonString, isLessThenZeroNumber, isGreaterThenHundredNumber;
+  var isValidate = false;
+  var inputWarningText = [];
+  var emptyFieldText = 'This Field is required';    
+  var inputValue = target.value.trim();
+  if (!inputValue) {
+    inputWarningText.push(emptyFieldText);
+    handleInputStyle('error', target);
+    isEmpty = true;
+  } else {
+    removeItemOnce(inputWarningText, emptyFieldText);
+    handleInputStyle('success', target);
+    isEmpty = false;
+  }
+  if (inputValue) {
+    if (_type === 'name') {
+      var isValidateName = getIsValidateName(inputValue);
+      var nonValidateNameText = 'Name is not validate';
+      if (!isValidateName) {
+        inputWarningText.push(nonValidateNameText);
+        handleInputStyle('error', target);
+        isNonString=true;
+      } else {
+        removeItemOnce(inputWarningText, nonValidateNameText);
+        handleInputStyle('success', target);
+        isNonString=false;
+      }
+    }
+  
+    if (_type === 'marks') {
+      var isValidateMarks = getIsValidateMarks(parseInt(inputValue));
+      var nonValidateMarksText = 'Marks should only have number';
+      if (!isValidateMarks) {
+        inputWarningText.push(nonValidateMarksText);
+        handleInputStyle('error', target);
+        isNonNumber = true;
+      } else {
+        removeItemOnce(inputWarningText, nonValidateMarksText);
+        handleInputStyle('success', target);
+        isNonNumber = false;
+
+        var isLessThenZero = getIsLessThenZero(parseInt(inputValue));
+        var greaterThanZeroText = 'Marks should be greater then or equal to zero';
+        if (isLessThenZero) {
+          inputWarningText.push(greaterThanZeroText);
+          handleInputStyle('error', target);
+          isLessThenZeroNumber = true;
+        } else {
+          removeItemOnce(inputWarningText, greaterThanZeroText);
+          handleInputStyle('success', target);
+          isLessThenZeroNumber = false;
+        }
+    
+        var isGreaterThenHundred = getIsGreaterThenHundred(parseInt(inputValue));
+        var greaterThenHundredText = 'Marks should be less then or equal to hundred';
+        if (isGreaterThenHundred) {
+          inputWarningText.push(greaterThenHundredText);
+          handleInputStyle('error', target);
+          isGreaterThenHundredNumber = true;
+        } else {
+          removeItemOnce(inputWarningText, greaterThenHundredText);
+          isGreaterThenHundredNumber = false;
+        }
+        
+      }
+      
+    }
+    if (isEmpty || isNonNumber || isNonString || isLessThenZeroNumber || isGreaterThenHundredNumber) {
+      isValidate = false;
+    } else {
+      isValidate = true;
+    }
+
+    return isValidate;
+
+  }
+  
+
+  handleInputWarningText(target, inputWarningText.join('<br />'));
+}
+
+function handleName(target) {
+  var _type = 'name';
+  handleValidate(target, _type);
+}
+
+function handleMarks(target) {
+  var _type = 'marks';
+  handleValidate(target, _type);
+}
+
+function handleChange (target) {
+  var inputName =  target.name;
+  if (inputName === "studentName") {
+    handleName(target);
+  } else {
+    handleMarks(target);
+  }
+}
+
 function add(accumulator, a) {
   return accumulator + a;
 }
@@ -128,31 +278,15 @@ function reset() {
   document.getElementById('hindiMarks').value = "";
 }
 
-function handleValidate (rowData) {
-  rowData.pop();
-  var isValidate = true;
-  if (rowData.includes("")) isValidate = false;
-  rowData.shift();
-  if (rowData.includes(null)) isValidate = false;
-  if (rowData.includes(undefined)) isValidate = false;
-  if (rowData.includes(NaN)) isValidate = false;
-  if (rowData.min() <= 0) isValidate = false;
-  if (rowData.max() >= 100) isValidate = false;
-  if (!isValidate) {
-    alert('all fields are required, marks should be in between of 0 to 100 and only numbers are allowed');
-  }
-  return isValidate;
-}
 
 function handleCreate () {
   var rowData = getFormData();
-  var row = insertRow();
-  // var isValidate = handleValidate(rowData);
-  // if (isValidate) {
+  if (true) {
+    var row = insertRow();
     updateCells(row, rowData);
     reset();
     alert("This record has been updated successfully");
-  // }
+  }
 }
 
 function handleEdit(e) {
@@ -176,8 +310,7 @@ function handleEdit(e) {
 
 function handleUpdate (e) {
   var rowData = getFormData();
-  var isValidate = handleValidate(rowData);
-  // if (isValidate) {
+  if (true) {
     var table = document.getElementById("studentsTable");
     var rowIndex = row.rowIndex - 1;
     var row = table.rows[rowIndex];
@@ -188,7 +321,7 @@ function handleUpdate (e) {
     toggleEl(butttonUpdate);
     reset();
     alert("This record has been updated successfully");
-  // }
+  }
 }
 
 function handleDelete(e) {

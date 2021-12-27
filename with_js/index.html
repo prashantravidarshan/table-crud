@@ -12,12 +12,14 @@
         <td>
           <input
             type="text"
+            onblur="handleChange(this)"
             name="studentName"
             id="studentName"
             placeholder="Enter Student Name"
             required
             value=""
           />
+          <div class="warning" style="display: none;"></div>
         </td>
       </tr>
 
@@ -26,7 +28,7 @@
         <td>
           <input
             type="text"
-            class="range-enforced"
+            onblur="handleChange(this)"
             name="mathematicsMarks"
             id="mathematicsMarks"
             placeholder="Enter Mathematics Marks"
@@ -42,7 +44,7 @@
         <td>
           <input
             type="text"
-            class="range-enforced"
+            onblur="handleChange(this)"
             name="physicsMarks"
             id="physicsMarks"
             placeholder="Enter Physics Marks"
@@ -58,7 +60,7 @@
         <td>
           <input
             type="text"
-            class="range-enforced"
+            onblur="handleChange(this)"
             name="chemistryMarks"
             id="chemistryMarks"
             placeholder="Enter Chemistry Marks"
@@ -74,7 +76,7 @@
         <td>
           <input
             type="text"
-            class="range-enforced"
+            onblur="handleChange(this)"
             name="englishMarks"
             id="englishMarks"
             placeholder="Enter English Marks"
@@ -90,7 +92,7 @@
         <td>
           <input
             type="text"
-            class="range-enforced"
+            onblur="handleChange(this)"
             name="hindiMarks"
             id="hindiMarks"
             placeholder="Enter Hindi Marks"

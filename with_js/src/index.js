@@ -72,6 +72,32 @@ function getIsGreaterThenHundred(number) {
   return number > 100;
 }
 
+function handleDisabled() {
+  var buttonUpdateEl = document.getElementById('butttonUpdate'); 
+  var isButtonUpdateElVisible = isVisible(buttonUpdateEl)
+  if (isButtonUpdateElVisible) {
+    var marksCollection = getMarksCollection();
+    console.log('marksCollection', marksCollection);
+    var isHavingAllNumeric =  !marksCollection.some(isNaN);
+    isAllMarksFieldsPresent = getIsAllMarksFieldsPresent();
+    if (isAllMarksFieldsPresent) {
+      if (isHavingAllNumeric) {
+        var isMinLessThenZero = marksCollection.min() <= 0;
+        var isMaxgreaterThenHunder = marksCollection.max()>= 100;
+        if (isMinLessThenZero || isMaxgreaterThenHunder) {
+          buttonUpdateEl.style.cursor = 'not-allowed';
+        } else {
+          buttonUpdateEl.style.cursor = 'pointer';
+        }
+      } else {
+        buttonUpdateEl.style.cursor = 'not-allowed';
+      }
+    } else {
+      buttonUpdateEl.style.cursor = 'not-allowed';
+    }
+  }
+}
+
 function handleValidate(target, _type) {
   var inputWarningText = [];
   var emptyFieldText = 'This Field is required';
@@ -80,6 +106,7 @@ function handleValidate(target, _type) {
     inputWarningText.push(emptyFieldText);
     handleInputStyle('error', target);
     __isValidate__ = false;
+    handleDisabled();
   } else {
     removeItemOnce(inputWarningText, emptyFieldText);
     handleInputStyle('success', target);
@@ -132,7 +159,7 @@ function handleValidate(target, _type) {
       }
 
     }
-    console.log(target.name, __isValidate__)
+    handleDisabled();
   }
 
   handleInputWarningText(target, inputWarningText.join('<br />'));
@@ -161,7 +188,7 @@ function add(accumulator, a) {
   return accumulator + a;
 }
 
-function getObtainedMarks() {
+function getMarksCollection() {
   var mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks;
   mathematicsMarks = parseInt(document.getElementById('mathematicsMarks').value);
   physicsMarks = parseInt(document.getElementById('physicsMarks').value);
@@ -176,7 +203,11 @@ function getObtainedMarks() {
     englishMarks,
     hindiMarks
   ];
+  return marksCollection;
+}
 
+function getObtainedMarks() {
+  var marksCollection = getMarksCollection();
   var obtainedMarks = marksCollection.reduce(add, 0);
   return obtainedMarks;
 
@@ -193,6 +224,21 @@ function getPercentage() {
   var percentage = (obtainedMarks / totalMarks) * 100;
 
   return parseFloat(percentage).round(2);
+}
+
+function getIsAllMarksFieldsPresent() {
+  var mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, isAllMarksFieldsPresent;
+  isAllMarksFieldsPresent = false;
+
+  mathematicsMarks = document.getElementById('mathematicsMarks').value.trim();
+  physicsMarks = document.getElementById('physicsMarks').value.trim();
+  chemistryMarks = document.getElementById('chemistryMarks').value.trim();
+  englishMarks = document.getElementById('englishMarks').value.trim();
+  hindiMarks = document.getElementById('hindiMarks').value.trim();
+  if (mathematicsMarks && physicsMarks && chemistryMarks && englishMarks && hindiMarks) {
+    isAllMarksFieldsPresent = true;
+  }
+  return isAllMarksFieldsPresent;
 }
 
 function getFormData() {

@@ -1,5 +1,15 @@
 var __totalMarks__ = 500;
 var __isValidate__ = true;
+
+window.addEventListener('load', (event) => {
+  loadTableData();
+});
+
+function loadTableData () {
+  var loadingTableData = document.getElementById('loadingTableData');
+  loadingTableData.style.display = 'none';
+}
+
 function getIsValidate() {
   return __isValidate__;
 }
@@ -261,22 +271,22 @@ function toggleEl(el) {
 }
 
 function insertCells(row) {
-  for (var i = 0; i < 9; i++) {
+  for (var i = 0; i < 10; i++) {
     row.insertCell(i);
   }
 }
 
 function updateCells(row, rowData) {
-  for (var i = 0; i < 7; i++) {
-    row.cells[i].innerHTML = rowData[i];
+  for (var i = 1; i < 8; i++) {
+    row.cells[i].innerHTML = rowData[i-1];
   }
 }
 
 function addActionLinks(row) {
   var edit = "<a class='link link-edit' onclick='handleEdit(this)'>Edit</a>";
   var del = "<a class='link link-delete' onclick='handleDelete(this)'>Delete</a>";
-  row.cells[7].innerHTML = edit;
-  row.cells[8].innerHTML = del;
+  row.cells[8].innerHTML = edit;
+  row.cells[9].innerHTML = del;
 }
 
 function insertRow() {
@@ -284,8 +294,8 @@ function insertRow() {
   var tbodyRowCount = table.tBodies[0].rows.length;
 
   var row = table.insertRow(tbodyRowCount + 1);
-
   insertCells(row);
+  row.cells[0].innerHTML = (table.rows.length - 2) + 1;
   addActionLinks(row);
   return row;
 }
@@ -334,12 +344,12 @@ function handleEdit(e) {
   row = e.parentElement.parentElement;
   rowIndex = row.rowIndex - 1;
   document.getElementById('currentRowIndex').value = rowIndex;
-  document.getElementById('studentName').value = row.cells[0].innerHTML;
-  document.getElementById('mathematicsMarks').value = row.cells[1].innerHTML;
-  document.getElementById('physicsMarks').value = row.cells[2].innerHTML;
-  document.getElementById('chemistryMarks').value = row.cells[3].innerHTML;
-  document.getElementById('englishMarks').value = row.cells[4].innerHTML;
-  document.getElementById('hindiMarks').value = row.cells[5].innerHTML;
+  document.getElementById('studentName').value = row.cells[1].innerHTML;
+  document.getElementById('mathematicsMarks').value = row.cells[2].innerHTML;
+  document.getElementById('physicsMarks').value = row.cells[3].innerHTML;
+  document.getElementById('chemistryMarks').value = row.cells[4].innerHTML;
+  document.getElementById('englishMarks').value = row.cells[5].innerHTML;
+  document.getElementById('hindiMarks').value = row.cells[6].innerHTML;
 
   document.getElementById("studentName").setAttribute("disabled", true);
 
@@ -391,7 +401,7 @@ function handleDelete(e) {
       toggleEl(butttonUpdate);
       reset();
     } else {
-      document.getElementById('currentRowIndex') = currentRowIndex - 1;
+      document.getElementById('currentRowIndex').value = currentRowIndex - 1;
       __isValidate__ = true;
     }
     alert("This record has been deleted successfully");

@@ -6,8 +6,37 @@ window.addEventListener('load', (event) => {
 });
 
 function loadTableData () {
+  var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
+  if (tableData.length > 0) {
+    var id, row, item;
+    for (i = 0; i < tableData.length; i ++) {
+      item = tableData[i];
+      id = item.id;
+      row = insertRow(id);  
+      updateCells(row, item)
+    }
+  }
   var loadingTableData = document.getElementById('loadingTableData');
   loadingTableData.style.display = 'none';
+}
+
+function addItemInSessionStorage(rowData) {
+  var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
+  tableData.push(rowData);
+  sessionStorage.setItem("table-data", JSON.stringify(tableData));
+}
+
+function editItemInSessionStorage(id, rowData) {
+  var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
+  tableData.push(rowData);
+  sessionStorage.setItem("table-data", JSON.stringify(tableData));
+}
+
+function deleteItemInSessionStorage(id) {
+  var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
+  var filteredTableData = tableData.filter(function(td) { return td.id !== id } )
+  sessionStorage.setItem("table-data", JSON.stringify(filteredTableData));
+
 }
 
 function getIsValidate() {
@@ -249,7 +278,17 @@ function getFormData() {
     handleChange(inputEl);
   }
 
-  rowData = [studentName, mathematicsMarks, physicsMarks, chemistryMarks, englishMarks, hindiMarks, percentage];
+  rowData = {
+    id: null,
+    name: studentName,
+    mathematicsMarks: mathematicsMarks,
+    physicsMarks: physicsMarks,
+    chemistryMarks: chemistryMarks,
+    englishMarks: englishMarks,
+    hindiMarks: hindiMarks,
+    percentage: percentage
+  }
+  
   return rowData;
 }
 
@@ -277,8 +316,9 @@ function insertCells(row) {
 }
 
 function updateCells(row, rowData) {
+  var rowDataValues = Object.values(rowData)
   for (var i = 1; i < 8; i++) {
-    row.cells[i].innerHTML = rowData[i-1];
+    row.cells[i].innerHTML = rowDataValues[i];
   }
 }
 
@@ -289,13 +329,21 @@ function addActionLinks(row) {
   row.cells[9].innerHTML = del;
 }
 
-function insertRow() {
+function insertRow(id) {
+  var rowId; 
   var table = document.getElementById("studentsTable");
-  var tbodyRowCount = table.tBodies[0].rows.length;
+  var tbodyRowCount = table.rows.length - 1;
+  if (id) {
+    rowId = id;
+  } else if (tbodyRowCount > 0) {
 
+    rowId = parseInt(table.rows[tbodyRowCount].cells[0].innerHTML) + 1
+  } else {
+    rowId = 1;
+  }
   var row = table.insertRow(tbodyRowCount + 1);
   insertCells(row);
-  row.cells[0].innerHTML = (table.rows.length - 2) + 1;
+  row.cells[0].innerHTML = rowId;
   addActionLinks(row);
   return row;
 }
@@ -332,6 +380,9 @@ function handleCreate() {
   if (isValidate) {
     var row = insertRow();
     updateCells(row, rowData);
+    rowData.id = parseInt(row.cells[0].innerHTML);
+    console.log(rowData);
+    addItemInSessionStorage(rowData);
     reset();
     alert("This record has been updated successfully");
   } else {
@@ -404,6 +455,8 @@ function handleDelete(e) {
       document.getElementById('currentRowIndex').value = currentRowIndex - 1;
       __isValidate__ = true;
     }
+    var id = parseInt(row.cells[0].innerHTML);
+    deleteItemInSessionStorage(id);
     alert("This record has been deleted successfully");
   }
 }

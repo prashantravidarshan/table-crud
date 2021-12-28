@@ -2,10 +2,11 @@ var __totalMarks__ = 500;
 var __isValidate__ = true;
 
 window.addEventListener('load', (event) => {
-  loadTableData();
+  setTimeout(loadTableData, 1000);
 });
 
 function loadTableData () {
+  var buttonAdd = document.getElementById('buttonAdd');
   var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
   if (tableData.length > 0) {
     var id, row, item;
@@ -18,6 +19,7 @@ function loadTableData () {
   }
   var loadingTableData = document.getElementById('loadingTableData');
   loadingTableData.style.display = 'none';
+  buttonAdd.style.cursor = 'pointer';
 }
 
 function addItemInSessionStorage(rowData) {
@@ -26,9 +28,18 @@ function addItemInSessionStorage(rowData) {
   sessionStorage.setItem("table-data", JSON.stringify(tableData));
 }
 
-function editItemInSessionStorage(id, rowData) {
+function updateItemInSessionStorage(id, rowData) {
   var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
-  tableData.push(rowData);
+  var index = tableData.findIndex(function(td) {
+    return td.id == id;
+  });
+  var currentTableRow = tableData[index];
+  currentTableRow.mathematicsMarks = rowData.mathematicsMarks;
+  currentTableRow.physicsMarks = rowData.physicsMarks;
+  currentTableRow.chemistryMarks = rowData.chemistryMarks;
+  currentTableRow.englishMarks = rowData.englishMarks;
+  currentTableRow.hindiMarks = rowData.hindiMarks;
+  currentTableRow.percentage = rowData.percentage;
   sessionStorage.setItem("table-data", JSON.stringify(tableData));
 }
 
@@ -36,7 +47,6 @@ function deleteItemInSessionStorage(id) {
   var tableData = JSON.parse(sessionStorage.getItem("table-data")) || [];
   var filteredTableData = tableData.filter(function(td) { return td.id !== id } )
   sessionStorage.setItem("table-data", JSON.stringify(filteredTableData));
-
 }
 
 function getIsValidate() {
@@ -374,19 +384,23 @@ function reset() {
 
 
 function handleCreate() {
-  __isValidate__ = true;
-  var rowData = getFormData();
-  var isValidate = getIsValidate();
-  if (isValidate) {
-    var row = insertRow();
-    updateCells(row, rowData);
-    rowData.id = parseInt(row.cells[0].innerHTML);
-    console.log(rowData);
-    addItemInSessionStorage(rowData);
-    reset();
-    alert("This record has been updated successfully");
-  } else {
-    alert("Validation Failed");
+  var buttonAdd = document.getElementById('buttonAdd');
+  var isDisabled = buttonAdd.style.cursor === 'not-allowed';
+  if (!isDisabled) {
+    __isValidate__ = true;
+    var rowData = getFormData();
+    var isValidate = getIsValidate();
+    if (isValidate) {
+      var row = insertRow();
+      updateCells(row, rowData);
+      rowData.id = parseInt(row.cells[0].innerHTML);
+      console.log(rowData);
+      addItemInSessionStorage(rowData);
+      reset();
+      alert("This record has been updated successfully");
+    } else {
+      alert("Validation Failed");
+    }
   }
 }
 
@@ -425,7 +439,9 @@ function handleUpdate(e) {
     if (isValidate) {
       var table = document.getElementById("studentsTable");
       var row = table.rows[currentRowIndex + 1];
+      var id = parseInt(row.cells[0].innerHTML);
       updateCells(row, rowData);
+      updateItemInSessionStorage(id, rowData)
       var buttonAdd = document.getElementById('buttonAdd');
       toggleEl(buttonAdd);
       toggleEl(buttonUpdateEl);
